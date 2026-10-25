@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>电竞房初版 · ESPORTS ROOM</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="container">
+  <canvas id="scene"></canvas>
+
+  <!-- 启动画面 -->
+  <div id="boot">
+    <div class="boot-inner">
+      <div class="boot-logo">// 电竞房初版</div>
+      <div class="boot-bar"><div class="boot-fill"></div></div>
+      <div class="boot-tip">正在加载 3D 场景 · Three.js r147 · 纯代码几何体</div>
+    </div>
+  </div>
+
+  <!-- 顶部操作引导 -->
+  <div id="top-bar">
+    <div class="title">
+      <span class="neon-text">// 电竞房初版</span>
+      <span class="subtitle">5.2m × 3.76m × 2.9m · 暗调木质电竞 × 观影双区</span>
+    </div>
+    <div class="hints">
+      <span class="chip"><b>拖拽</b> 旋转</span>
+      <span class="chip"><b>滚轮</b> 缩放</span>
+      <span class="chip"><b>右键</b> 平移</span>
+      <span class="chip"><b>点击设备</b> 查看参数</span>
+      <span class="chip"><b>1-4</b> 快捷视角</span>
+    </div>
+  </div>
+
+  <!-- 侧边硬件清单 -->
+  <aside id="side-panel">
+    <div class="panel-head">
+      <div class="dot"></div>
+      <span>硬件清单</span>
+      <span class="count" id="hw-count">0 件</span>
+    </div>
+    <ul id="hw-list"></ul>
+    <div class="panel-foot">
+      <div class="view-grid">
+        <button class="view-btn active" data-view="overview">🏠 总览</button>
+        <button class="view-btn" data-view="entry">🚪 进门</button>
+        <button class="view-btn" data-view="desk">🖥 桌前</button>
+        <button class="view-btn" data-view="sofa">🛋 沙发</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- 悬停提示 -->
+  <div id="hover-tip"></div>
+
+  <!-- 设备详情卡片（停靠左下角，不遮挡画面） -->
+  <div id="detail-modal" class="hidden">
+    <div class="modal-card">
+      <button class="close-btn" id="btn-close">×</button>
+      <div class="modal-glow"></div>
+      <h2 id="md-name">设备名称</h2>
+      <div class="modal-zone" id="md-zone">区域</div>
+      <div class="modal-section">
+        <h3>规格参数</h3>
+        <table id="md-specs"></table>
+      </div>
+      <div class="modal-section">
+        <h3>布局信息</h3>
+        <p id="md-desc"></p>
+      </div>
+      <button id="md-ask">✨ 问 Kimi 这个设备</button>
+    </div>
+  </div>
+
+  <!-- Kimi 设计助手 -->
+  <button id="kimi-fab" title="Kimi 设计助手">✨ Kimi</button>
+  <div id="kimi-panel" class="hidden">
+    <div class="kimi-head">
+      <span class="kimi-title">✨ Kimi 设计助手</span>
+      <button id="kimi-gear" title="API 设置">⚙</button>
+      <button id="kimi-close" title="关闭">×</button>
+    </div>
+    <div id="kimi-settings" class="hidden">
+      <label>API Key
+        <input type="password" id="kimi-key" placeholder="sk-...  (platform.moonshot.cn)">
+      </label>
+      <label>模型
+        <input type="text" id="kimi-model" value="kimi-k2-0905-preview">
+      </label>
+      <div class="kimi-set-row">
+        <button id="kimi-save">保存</button>
+        <span id="kimi-key-status"></span>
+      </div>
+      <div class="kimi-key-hint">Key 只存在你自己浏览器的 localStorage，不会发到别处</div>
+    </div>
+    <div id="kimi-msgs"></div>
+    <div class="kimi-chips">
+      <button class="kchip">介绍一下这个房间</button>
+      <button class="kchip">电竞区设备怎么联动</button>
+      <button class="kchip">观影区视距合理吗</button>
+      <button class="kchip">灯光氛围方案</button>
+    </div>
+    <div class="kimi-input">
+      <textarea id="kimi-text" rows="1" placeholder="问问这个房间的设计… (Enter 发送)"></textarea>
+      <button id="kimi-send">➤</button>
+    </div>
+  </div>
+</div>
+
+<script src="lib/three.min.js"></script>
+<script src="lib/OrbitControls.js"></script>
+<script src="lib/CopyShader.js"></script>
+<script src="lib/LuminosityHighPassShader.js"></script>
+<script src="lib/GammaCorrectionShader.js"></script>
+<script src="lib/EffectComposer.js"></script>
+<script src="lib/ShaderPass.js"></script>
+<script src="lib/MaskPass.js"></script>
+<script src="lib/RenderPass.js"></script>
+<script src="lib/UnrealBloomPass.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

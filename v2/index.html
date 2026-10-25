@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>电竞房二版 · UNIT-01 检视台</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<canvas id="stage"></canvas>
+<div id="vignette"></div>
+<div id="scanlines"></div>
+
+<!-- ───────────── 启动遮罩 ───────────── -->
+<div id="boot">
+  <div class="boot-box">
+    <div class="boot-id">UNIT&nbsp;01</div>
+    <div class="boot-title">电竞房二版</div>
+    <div class="boot-sub">5200 × 3760 × 2900 mm · 暗调木质电竞 × 观影双区</div>
+    <div class="boot-track"><i></i></div>
+    <div class="boot-log" id="boot-log">初始化几何体…</div>
+  </div>
+</div>
+
+<!-- ───────────── 顶栏 ───────────── -->
+<header id="topbar">
+  <div class="brand">
+    <span class="brand-mark">◤</span>
+    <span class="brand-name">电竞房二版</span>
+    <span class="brand-tag">UNIT-01 / 剖面检视</span>
+  </div>
+  <div class="guide" id="guide">
+    <span class="g"><kbd>左键拖拽</kbd>旋转</span>
+    <span class="g"><kbd>滚轮</kbd>缩放</span>
+    <span class="g"><kbd>右键拖拽</kbd>平移</span>
+    <span class="g"><kbd>点击设备</kbd>看参数</span>
+    <span class="g"><kbd>1-5</kbd>切视角</span>
+    <span class="g"><kbd>Esc</kbd>退出聚焦</span>
+  </div>
+</header>
+
+<!-- ───────────── 左：硬件清单 ───────────── -->
+<aside id="inventory">
+  <div class="pnl-head">
+    <h2>硬件清单</h2>
+    <span class="pnl-count"><b id="inv-count">0</b> 件</span>
+  </div>
+  <div class="inv-tabs" id="inv-tabs"></div>
+  <div class="inv-scroll"><ul id="inv-list"></ul></div>
+  <div class="inv-foot">
+    <div class="budget-row"><span>建筑面积</span><b>19.5 ㎡</b></div>
+    <div class="budget-row"><span>净高</span><b>2900 mm</b></div>
+    <div class="budget-row"><span>分区</span><b>电竞 / 观影 / 展示</b></div>
+  </div>
+</aside>
+
+<!-- ───────────── 底：视角 + 开关 ───────────── -->
+<nav id="dock">
+  <div class="dock-grp" id="views">
+    <span class="dock-lab">视角</span>
+    <button class="vbtn active" data-view="orbit"><i>⬠</i>剖面总览<em>1</em></button>
+    <button class="vbtn" data-view="desk"><i>▣</i>电竞区<em>2</em></button>
+    <button class="vbtn" data-view="cinema"><i>▤</i>观影区<em>3</em></button>
+    <button class="vbtn" data-view="shelf"><i>▥</i>展示区<em>4</em></button>
+    <button class="vbtn" data-view="door"><i>▧</i>进门视角<em>5</em></button>
+  </div>
+  <div class="dock-sep"></div>
+  <div class="dock-grp" id="toggles">
+    <span class="dock-lab">显示</span>
+    <button class="tbtn on" data-tg="walls"><s></s>墙体</button>
+    <button class="tbtn" data-tg="labels"><s></s>标注</button>
+    <button class="tbtn" data-tg="dims"><s></s>尺寸</button>
+    <button class="tbtn" data-tg="explode"><s></s>拆解</button>
+    <button class="tbtn on" data-tg="night"><s></s>夜间</button>
+  </div>
+</nav>
+
+<!-- ───────────── 右：详情抽屉 ───────────── -->
+<section id="detail" class="closed" aria-hidden="true">
+  <button id="dt-close" title="关闭 (Esc)">✕</button>
+  <div class="dt-inner">
+    <div class="dt-row dt-zone"><span id="dt-zone">区域</span><span id="dt-idx">#00</span></div>
+    <h2 id="dt-name">设备名称</h2>
+    <p id="dt-tag" class="dt-tag">一句话定位</p>
+
+    <div class="dt-block">
+      <h3><span>规格参数</span><i></i></h3>
+      <table id="dt-specs"></table>
+    </div>
+
+    <div class="dt-block">
+      <h3><span>尺寸 / 占位</span><i></i></h3>
+      <div class="dt-dims" id="dt-dims"></div>
+      <div class="dt-mini" id="dt-mini"></div>
+    </div>
+
+    <div class="dt-block">
+      <h3><span>布局说明</span><i></i></h3>
+      <p id="dt-desc" class="dt-desc"></p>
+    </div>
+
+    <div class="dt-block" id="dt-note-block">
+      <h3><span>设计取舍</span><i></i></h3>
+      <p id="dt-note" class="dt-note"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── 悬浮名牌 ───────────── -->
+<div id="hovertip"><b id="ht-name"></b><span id="ht-zone"></span></div>
+
+<!-- 3D 标注层 -->
+<div id="pins"></div>
+
+<!-- 右下角：指北 + 比例 -->
+<div id="compass">
+  <svg viewBox="0 0 64 64" id="compass-svg">
+    <circle cx="32" cy="32" r="27" class="c-ring"/>
+    <g id="c-rot">
+      <path d="M32 7 L37 30 L32 26 L27 30 Z" class="c-n"/>
+      <path d="M32 57 L27 34 L32 38 L37 34 Z" class="c-s"/>
+    </g>
+    <text x="32" y="36" class="c-lab">N</text>
+  </svg>
+  <div class="scalebar"><i></i><span>1 m</span></div>
+</div>
+
+<div id="fps">—</div>
+
+<script src="lib/three.min.js"></script>
+<script src="lib/OrbitControls.js"></script>
+<script src="lib/CopyShader.js"></script>
+<script src="lib/LuminosityHighPassShader.js"></script>
+<script src="lib/GammaCorrectionShader.js"></script>
+<script src="lib/EffectComposer.js"></script>
+<script src="lib/ShaderPass.js"></script>
+<script src="lib/MaskPass.js"></script>
+<script src="lib/RenderPass.js"></script>
+<script src="lib/UnrealBloomPass.js"></script>
+<script src="js/textures.js"></script>
+<script src="js/data.js"></script>
+<script src="js/room.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
