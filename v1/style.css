@@ -70,6 +70,8 @@ body{
   backdrop-filter: blur(8px);
 }
 .chip b{ color:#00e5ff; font-weight:600; margin-right:2px; }
+.home-chip{ pointer-events:auto; text-decoration:none; cursor:pointer; transition:all .2s; }
+.home-chip:hover{ border-color:rgba(0,229,255,0.6); color:#fff; box-shadow:0 0 10px rgba(0,229,255,0.3); }
 
 /* ===== 侧边面板 ===== */
 #side-panel{
