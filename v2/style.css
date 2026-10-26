@@ -86,7 +86,8 @@ body{
 }
 .guide .g:hover{color:var(--ink);border-color:var(--line-s)}
 .guide kbd{font:600 10px/1 var(--mono);color:var(--cy);letter-spacing:.04em}
-.guide a.g{text-decoration:none;cursor:pointer}
+.guide a.g{text-decoration:none;cursor:pointer;font-size:13px;padding:8px 14px}
+.guide a.g kbd{font-size:12px}
 .guide a.g:hover kbd{color:#fff}
 #guide.fade{opacity:.35}
 
